@@ -44,7 +44,7 @@ if (NODE_ENV === "development") {
 /* production build */
 if (NODE_ENV === "production") {
   /* client is served with seperate server, allow cors for that client server */
-  app.use(cors({ credentials: true, origin: "http://yuchiu-slack.surge.sh" }));
+  app.use(cors({ credentials: true, origin: "https://dev.instaconnect.io" }));
 
   /* client is served within server, join client build path */
   // app.use(express.static(path.join(__dirname, "./client")));
