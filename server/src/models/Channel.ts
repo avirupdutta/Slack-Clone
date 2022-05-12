@@ -1,6 +1,6 @@
 import * as Sequelize from "sequelize";
-
 import { getNewId } from "./common";
+
 
 export const ChannelFactory = (
   sequelize: Sequelize.Sequelize,
@@ -21,6 +21,16 @@ export const ChannelFactory = (
       type: DataTypes.BOOLEAN,
       field: "message_group",
       defaultValue: false
+    },
+    message_recipient_userid: {
+      type: DataTypes.STRING,
+      field: "message_recipient_userid",
+      defaultValue: null
+    },
+    created_by: {
+      type: DataTypes.STRING,
+      field: "created_by",
+      defaultValue: null
     },
     brief_description: {
       type: DataTypes.STRING,

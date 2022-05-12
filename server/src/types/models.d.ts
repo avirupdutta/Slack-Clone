@@ -22,6 +22,8 @@ declare global {
     name?: string;
     public?: boolean;
     message_group?: boolean;
+    message_recipient_userid?: string;
+    created_by?: string;
     brief_description?: string;
     detail_description?: string;
     team_id?: string;
@@ -31,7 +33,7 @@ declare global {
 
   interface ChannelInstance
     extends Sequelize.Instance<ChannelAttributes>,
-      ChannelAttributes {}
+    ChannelAttributes { }
 
   /**
    * Message
@@ -51,7 +53,7 @@ declare global {
 
   interface MessageInstance
     extends Sequelize.Instance<MessageAttributes>,
-      MessageAttributes {}
+    MessageAttributes { }
 
   /**
    * Team
@@ -66,7 +68,7 @@ declare global {
 
   interface TeamInstance
     extends Sequelize.Instance<TeamAttributes>,
-      TeamAttributes {}
+    TeamAttributes { }
 
   /**
    * User
@@ -88,7 +90,7 @@ declare global {
 
   interface UserInstance
     extends Sequelize.Instance<UserAttributes>,
-      UserAttributes {}
+    UserAttributes { }
 
   /**
    * TeamMember
@@ -104,7 +106,7 @@ declare global {
 
   interface TeamMemberInstance
     extends Sequelize.Instance<TeamMemberAttributes>,
-      TeamMemberAttributes {}
+    TeamMemberAttributes { }
 
   /**
    * ChannelMember
@@ -119,7 +121,7 @@ declare global {
 
   interface ChannelMemberInstance
     extends Sequelize.Instance<ChannelMemberAttributes>,
-      ChannelMemberAttributes {}
+    ChannelMemberAttributes { }
 
   interface DbInterface {
     sequelize: Sequelize.Sequelize;

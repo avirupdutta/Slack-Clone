@@ -1,8 +1,8 @@
-import * as _ from "lodash";
 import { Request, Response } from "express";
-
-import { redisCache, queries } from "./common";
+import * as _ from "lodash";
 import models from "../models";
+import { queries, redisCache } from "./common";
+
 
 export default {
   getAllChannel: async (req: Request, res: Response) => {
@@ -29,13 +29,17 @@ export default {
   createChannel: async (req: any, res: Response) => {
     try {
       const currentUserId = req.user.id;
+
+      console.log(req.user);
+
+
       const {
         teamId,
         channelName,
         isPublic,
         detail_description,
         membersList,
-        messageGroup
+        messageGroup,
       } = req.body;
       // remove stale data from cache
       redisCache.delete(`channelList:${teamId}`);
@@ -84,6 +88,9 @@ export default {
               });
             }
 
+            console.log(currentUserId);
+
+
             /* conditions are validated, create the message group */
             const channelData = await models.Channel.create(
               {
@@ -91,7 +98,9 @@ export default {
                 public: isPublic,
                 detail_description,
                 message_group: true,
-                team_id: teamId
+                team_id: teamId,
+                message_recipient_userid: membersList[0],
+                created_by: currentUserId
               },
               { transaction }
             );

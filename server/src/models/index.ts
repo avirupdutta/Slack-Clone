@@ -1,12 +1,12 @@
 import * as Sequelize from "sequelize";
-
+import sequelizeConfig from "../config/sequelizeConfig";
 import { ChannelFactory } from "./Channel";
-import { UserFactory } from "./User";
-import { TeamFactory } from "./Team";
 import { ChannelMemberFactory } from "./ChannelMember";
 import { MessageFactory } from "./Message";
+import { TeamFactory } from "./Team";
 import { TeamMemberFactory } from "./TeamMember";
-import sequelizeConfig from "../config/sequelizeConfig";
+import { UserFactory } from "./User";
+
 
 const createModels = (sequelizeConfig): DbInterface => {
   const { database, username, password, params } = sequelizeConfig;

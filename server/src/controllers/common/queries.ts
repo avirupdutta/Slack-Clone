@@ -62,7 +62,9 @@ export default {
     channels.detail_description, 
     channels.created_at, 
     channels.updated_at, 
-    channels.team_id
+    channels.team_id,
+    channels.message_recipient_userid,
+    channels.created_by
     FROM channels
     LEFT OUTER JOIN channel_members
     ON channels.id = channel_members.channel_id
