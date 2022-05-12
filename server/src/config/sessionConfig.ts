@@ -1,14 +1,10 @@
 import * as connectRedis from "connect-redis";
 import * as session from "express-session";
-
 import redisClient from "../config/redisClient";
 import {
-  REDIS_PORT,
-  REDIS_HOST,
-  REDIS_TIME_TO_LIVE,
-  SESSION_SECRET,
-  SESSION_NAME
+  REDIS_HOST, REDIS_PORT, REDIS_TIME_TO_LIVE, SESSION_NAME, SESSION_SECRET
 } from "../utils/secrets";
+
 
 const RedisStore = connectRedis(session);
 
@@ -30,4 +26,9 @@ const sessionConfig = {
     maxAge: 604800000 // 1000 * 60 * 60 * 24 * 7 in milliseconds
   }
 };
+
+export const jwtConfig = {
+  secret: SESSION_SECRET
+}
+
 export default sessionConfig;

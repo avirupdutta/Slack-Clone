@@ -1,15 +1,16 @@
-import io from "socket.io-client";
-import axios from "axios";
+/* eslint-disable prettier/prettier */
+
 
 import {
-  NODE_ENV,
   DEV_SERVER_PORT,
   DEV_SERVER_URL,
-  DEV_SERVER_WS,
-  PROD_SERVER_PORT,
+  DEV_SERVER_WS, NODE_ENV, PROD_SERVER_PORT,
   PROD_SERVER_URL,
   PROD_SERVER_WS
 } from "@/utils/secrets";
+import axios from "axios";
+import io from "socket.io-client";
+
 
 const apiV1 = () =>
   axios.create({
@@ -29,3 +30,4 @@ const socket = io(
 );
 
 export { socket, apiV1 };
+

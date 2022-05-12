@@ -1,22 +1,18 @@
+import axios from "axios";
+import * as bcrypt from "bcryptjs";
+import { Request, Response } from "express";
 import * as fse from "fs-extra";
 import * as Identicon from "identicon.js";
-import * as randomstring from "randomstring";
-import * as randomHex from "randomhex";
+import * as jwt from "jsonwebtoken";
 import * as _ from "lodash";
-import * as bcrypt from "bcryptjs";
-import axios from "axios";
-import { Request, Response } from "express";
-
-import { redisCache, queries } from "./common";
+import * as randomHex from "randomhex";
+import * as randomstring from "randomstring";
 import models from "../models";
 import {
-  SERVER_URL,
-  SERVER_PORT,
-  NODE_ENV,
-  GOOGLE_CLIENT_ID,
-  FACEBOOK_CLIENT_ID,
-  FACEBOOK_CLIENT_SECRET
+  GOOGLE_CLIENT_ID, NODE_ENV, SERVER_PORT, SERVER_URL, SESSION_SECRET
 } from "../utils/secrets";
+import { queries, redisCache } from "./common";
+
 
 const userSummary = user => {
   const summary = {
@@ -520,6 +516,12 @@ export default {
       req.session.user = user;
       req.session.save(() => {});
 
+      // JWT LOGIN
+      const token = jwt.sign({
+        user: userSummary(user),
+        teamList
+      }, SESSION_SECRET)
+
       res.status(200).send({
         meta: {
           type: "success",
@@ -527,7 +529,16 @@ export default {
           message: ""
         },
         user: userSummary(user),
-        teamList
+        teamList,
+        payload: {
+          jwt: token,
+          refreshToken: token,
+          userEntity: {
+            roleId: 1,
+            userId: user.id,
+            ...userSummary(user)
+          }
+        }
       });
     } catch (err) {
       console.log(err);
@@ -564,6 +575,10 @@ export default {
 
   tryAutoSingInUser: async (req: any, res: Response) => {
     try {
+      if (!req.user) {
+        throw new Error('User not found!')
+      }
+      
       const currentUserId = req.user.id;
 
       const user = await models.User.findOne({

@@ -1,16 +1,17 @@
-import * as express from "express";
-import * as http from "http";
-import * as socketIo from "socket.io";
-import * as cors from "cors";
-import * as logger from "morgan";
-import * as cookieParser from "cookie-parser";
-import * as helmet from "helmet";
-import * as compression from "compression";
 import * as bodyParser from "body-parser";
-
-import { NODE_ENV, SERVER_PORT } from "./utils/secrets";
-import { useSession, checkSession, simulateLatency } from "./middlewares";
+import * as compression from "compression";
+import * as cookieParser from "cookie-parser";
+import * as cors from "cors";
+import * as express from "express";
+import * as helmet from "helmet";
+import * as http from "http";
+import * as logger from "morgan";
+import * as socketIo from "socket.io";
+import passportConfig from './config/passport';
+import { checkSession, useSession } from "./middlewares";
 import { apiV1Router, sockets } from "./routers";
+import { NODE_ENV, SERVER_PORT } from "./utils/secrets";
+
 
 /**
  * create server
@@ -26,7 +27,15 @@ const io = socketIo(httpServer);
 /* development build, use logger & simulateLatency */
 if (NODE_ENV === "development") {
   app.use(logger("dev"));
-  app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+  app.use(cors(
+    {
+      credentials: true,
+      origin: [
+        "http://localhost:3000",
+        "http://localhost:3001"
+      ]
+    }
+  ));
 
   // to simulate latency of 50ms - 1000ms
   // app.use(simulateLatency(50, 1000));
@@ -53,6 +62,7 @@ app.use(checkSession());
 app.use(helmet());
 app.use(compression());
 app.use("/assets", express.static("assets"));
+passportConfig(app)
 
 /*
  * routes & websockets events listener 
@@ -61,3 +71,4 @@ app.use("/api/v1", apiV1Router);
 sockets(io);
 
 export { app, httpServer };
+

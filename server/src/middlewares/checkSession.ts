@@ -1,6 +1,7 @@
-import { Response, NextFunction } from "express";
-
+import { NextFunction, Response } from "express";
+import { authenticate } from 'passport';
 import models from "../models";
+
 
 export default () => async (req: any, res: Response, next: NextFunction) => {
   if (req.session && req.session.user) {
@@ -22,3 +23,5 @@ export default () => async (req: any, res: Response, next: NextFunction) => {
     next();
   }
 };
+
+export const auth = authenticate('jwt', { session: false });
