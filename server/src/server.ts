@@ -12,7 +12,7 @@ app.use(errorHandler());
  * Start Express server.
  */
 models.sequelize.sync().then(() => {
-  httpServer.listen(app.get("port"), () => {
+  httpServer.listen(app.get("port"), '127.0.0.1', () => {
     console.log(
       "  App is running at http://localhost:%d in %s mode",
       app.get("port"),

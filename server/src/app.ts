@@ -32,7 +32,8 @@ if (NODE_ENV === "development") {
       credentials: true,
       origin: [
         "http://localhost:3000",
-        "http://localhost:3001"
+        "http://localhost:3001",
+        "https://dev.instaconnect.io"
       ]
     }
   ));
@@ -67,6 +68,7 @@ passportConfig(app)
 /*
  * routes & websockets events listener 
  */
+app.get("/", (req, res) => res.send("Backend is running!"));
 app.use("/api/v1", apiV1Router);
 sockets(io);
 
